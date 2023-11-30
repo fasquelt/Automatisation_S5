@@ -11,7 +11,7 @@ services:
         build:
             context: ..
             dockerfile: docker/Dockerfile
-        image: lpdevops:20230328093233
+        image: lpdevops:20231130081956
         volumes:
             - ../..:${MANALA_DIR}
         environment:

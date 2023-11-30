@@ -19,7 +19,7 @@ project:
 
 system:
     ansible:
-        version: 2.14.3
+        version: 2.15.5
         config: |
             [defaults]
             control_path_dir = /tmp/ansible/cp
