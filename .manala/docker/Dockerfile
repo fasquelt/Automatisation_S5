@@ -9,13 +9,17 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ARG MANALA_USER_ID="1000"
 ARG MANALA_GROUP_ID="1000"
 
-ARG GOSU_VERSION="1.16"
-ARG GOMPLATE_VERSION="3.11.5"
+ARG GOSU_VERSION="1.17"
+ARG GOMPLATE_VERSION="3.11.7"
+ARG DIRENV_VERSION="2.33.0"
 
 # The 'container' environment variable tells systemd that it's running inside a
 # Docker container environment.
 # It's also internally used for checking we're running inside a container.
 ENV container="docker"
+
+# Default locale
+ENV LANG C.UTF-8
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -49,6 +53,10 @@ RUN \
     && curl -sSL "https://github.com/hairyhenderson/gomplate/releases/download/v${GOMPLATE_VERSION}/gomplate_linux-$(case $(dpkg --print-architecture) in "amd64") echo "amd64" ;; "arm64") echo "arm64" ;; esac)" \
         --output /usr/local/bin/gomplate \
     && chmod +x /usr/local/bin/gomplate \
+    # Direnv
+    && curl -sSL "https://github.com/direnv/direnv/releases/download/v${DIRENV_VERSION}/direnv.linux-$(case $(dpkg --print-architecture) in "amd64") echo "amd64" ;; "arm64") echo "arm64" ;; esac)" \
+        --output /usr/local/bin/direnv \
+    && chmod +x /usr/local/bin/direnv \
     # Bash completion
     && install --verbose --mode 0755 --directory /etc/bash_completion.d \
     # Oh My Bash
@@ -60,7 +68,7 @@ RUN \
 # System #
 ##########
 
-ENV PIPX_HOME="/usr/local"
+ENV PIPX_HOME="/usr/local/pipx"
 ENV PIPX_BIN_DIR="/usr/local/bin"
 
 RUN \
@@ -82,7 +90,7 @@ RUN \
 # Ansible
 RUN \
     pipx install --pip-args="--no-cache-dir" \
-        ansible-core==2.15.5
+        ansible-core==2.16.2
 
 # Run
 COPY docker/entrypoint.sh /
