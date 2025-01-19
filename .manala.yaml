@@ -11,7 +11,7 @@ manala:
 ###########
 
 project:
-    name: lpdevops
+    name: devops
 
 ##########
 # System #
@@ -19,7 +19,7 @@ project:
 
 system:
     ansible:
-        version: 2.16.2
+        version: 2.17.4
         config: |
             [defaults]
             control_path_dir = /tmp/ansible/cp

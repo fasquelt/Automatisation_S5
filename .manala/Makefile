@@ -49,7 +49,7 @@ sh:
 	else \
 		$(call manala_docker_command, \
 			$(if $(PORT),--publish $(PORT)), \
-		) bash --login ; \
+		) zsh --login ; \
 	fi
 .PHONY: sh
 
@@ -63,7 +63,7 @@ clean:
 		--remove-orphans
 	@$(call manala_log, Removes old docker images…)
 	$(manala_docker) images \
-		--filter reference='lpdevops:*' \
+		--filter reference='devops:*' \
 		--format "{{.ID}}" \
 			| xargs -r $(manala_docker) rmi --force
 	@$(call manala_log, Delete cache dir…)
