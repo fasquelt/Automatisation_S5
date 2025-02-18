@@ -1,0 +1,18 @@
+---
+
+- hosts: dbservers
+
+  pre_tasks:
+    - ansible.builtin.import_tasks: common.yaml
+    
+  tasks:
+  - name: Install MariaDB server
+    ansible.builtin.apt:
+      name: mariadb-server 
+      state: present
+    tags:
+      - db
+      - installation
+
+  handlers:
+    - ansible.builtin.include_tasks: handlers.yaml

@@ -1,0 +1,4 @@
+stage: production
+motd:
+  message: "Attention production !"
+  

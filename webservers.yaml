@@ -7,6 +7,9 @@
 
   pre_tasks:
     - ansible.builtin.import_tasks: common.yaml
+    - name: Updating APT cache index
+      ansible.builtin.apt:
+        update_cache: yes
 
   tasks:
   - name: Install Nginx server
@@ -26,6 +29,13 @@
     tags:
       - nginx
       - configuration
+    
+  - name: Ensure Nginx service is started
+    service:
+      name: nginx
+      state: started
+    become: yes
+    become_user: root
 
   - name: Install PHP-FPM service
     ansible.builtin.apt:
