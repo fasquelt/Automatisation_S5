@@ -1,0 +1,47 @@
+---
+
+- hosts: webservers
+
+  roles:
+    - role: motd
+
+  pre_tasks:
+    - ansible.builtin.import_tasks: common.yaml
+
+  tasks:
+  - name: Install Nginx server
+    ansible.builtin.apt:
+      name: nginx
+      state: present
+    tags:
+      - nginx
+      - installation
+
+  - name: Nginx status configuration file
+    ansible.builtin.copy:
+      src: nginx/status.conf
+      dest: /etc/nginx/conf.d/status.conf
+    notify:
+      - restart_nginx
+    tags:
+      - nginx
+      - configuration
+
+  - name: Install PHP-FPM service
+    ansible.builtin.apt:
+      name: php-fpm
+      state: present
+  
+  - name: PHP-FPM > Configuration
+    ansible.builtin.template:
+      src: "php/app.ini.j2"
+      dest: "/etc/php/8.2/fpm/app.ini"
+    notify:
+      - restart_php-fpm
+
+  - name: Set a hostname
+    ansible.builtin.hostname:
+      name: "{{ hostname }}"
+
+  handlers:
+    - ansible.builtin.import_tasks: handlers.yaml
